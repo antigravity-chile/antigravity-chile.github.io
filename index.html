@@ -438,7 +438,7 @@
               <div>
                 <div class="material-title"><a href="${item.url}">${item.title}</a></div>
                 <div class="material-description">${item.description}</div>
-                <div class="tagline">Authors: ${item.authors.join(", ")}</div>
+                <div class="tagline">${item.authors.length === 1 ? "Author" : "Authors"}: ${item.authors.join(", ")}</div>
                 <div class="tagline">${item.tags.join(" · ")}</div>
               </div>
             </li>
