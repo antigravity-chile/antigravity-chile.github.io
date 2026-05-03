@@ -385,13 +385,14 @@
 
     function materialSearchText(item) {
       return [
-        item.title,
-        item.type,
-        item.area,
-        item.level,
-        item.description,
-        ...item.tags
-      ].join(" ").toLowerCase();
+  item.title,
+  item.author,
+  item.type,
+  item.area,
+  item.level,
+  item.description,
+  ...item.tags
+].join(" ").toLowerCase();
     }
 
     function groupByArea(items) {
@@ -432,6 +433,7 @@
               <div>
                 <div class="material-title"><a href="${item.url}">${item.title}</a></div>
                 <div class="material-description">${item.description}</div>
+                <div class="tagline">Author: ${item.author}</div>
                 <div class="tagline">${item.tags.join(" · ")}</div>
               </div>
             </li>
