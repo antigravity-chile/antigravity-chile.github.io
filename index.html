@@ -284,6 +284,7 @@
       <nav aria-label="Main navigation">
         <a href="#about">About</a>
         <a href="#archive">Lecture notes</a>
+        <a href="#videos">Videos</a>
         <a href="#contributors">Contributors</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -336,6 +337,15 @@
         <div id="emptyMessage" class="empty">No material matches this search.</div>
       </section>
 
+      <section id="videos">
+  <h2>Videos</h2>
+  <p>
+    Recorded seminars and lectures by contributors to this archive.
+  </p>
+
+  <div id="videosContent"></div>
+</section>
+      
       <section id="contributors">
         <h2>Contributors</h2>
         <p>
@@ -429,6 +439,76 @@
         url: "#"
       }
     ];
+
+    const VIDEOS = [
+  {
+    title: "Black holes and holography",
+    type: "Seminar",
+    speakers: ["Ayan Mukhopadhyay"],
+    hosts: ["Radouane Gannouji"],
+    channel: "Anti Gravity Meetings",
+    youtubeId: "abc123XYZ"
+  },
+  {
+    title: "Problems in Quantum Mechanics",
+    type: "Lecture",
+    speakers: ["Olivera Mišković"],
+    hosts: [],
+    channel: "Anti Gravity Meetings",
+    youtubeId: "VIDEO_ID"
+  }
+];
+
+const videosContent = document.getElementById("videosContent");
+
+function groupVideosByType(items) {
+  return items.reduce((groups, item) => {
+    if (!groups[item.type]) groups[item.type] = [];
+    groups[item.type].push(item);
+    return groups;
+  }, {});
+}
+
+function renderVideos() {
+  const groups = groupVideosByType(VIDEOS);
+
+  videosContent.innerHTML = Object.keys(groups).map(type => {
+    const entries = groups[type].map(video => {
+      const speakerLabel = video.speakers.length === 1 ? "Speaker" : "Speakers";
+
+      const hostLine = video.hosts.length > 0
+        ? `<p><strong>${video.hosts.length === 1 ? "Host" : "Hosts"}:</strong> ${video.hosts.join(", ")}</p>`
+        : "";
+
+      return `
+        <div class="lecture-card">
+          <div class="video-wrapper">
+            <iframe
+              src="https://www.youtube.com/embed/${video.youtubeId}"
+              title="${video.title}"
+              loading="lazy"
+              allowfullscreen>
+            </iframe>
+          </div>
+
+          <h3>${video.title}</h3>
+          <p><strong>${speakerLabel}:</strong> ${video.speakers.join(", ")}</p>
+          ${hostLine}
+          <p><strong>Channel:</strong> ${video.channel}</p>
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <div class="area-block">
+        <h3>${type}s</h3>
+        <div class="lecture-grid">
+          ${entries}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
 
     const search = document.getElementById("search");
     const typeFilter = document.getElementById("typeFilter");
@@ -527,7 +607,8 @@
     }
 
     renderMaterials();
-    runSelfTests();
+renderVideos();
+runSelfTests();
   </script>
 </body>
 </html>
