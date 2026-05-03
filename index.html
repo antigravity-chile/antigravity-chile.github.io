@@ -233,46 +233,62 @@
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
 }
-    .lecture-grid {
+.video-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 360px));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 340px));
+  gap: 22px;
+  margin-top: 18px;
+  justify-content: start;
 }
 
-.lecture-card {
+.video-card {
   background: white;
-  border-radius: 14px;
-  padding: 1.2rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--line);
+  padding: 12px;
 }
 
-.video-wrapper {
+.video-thumb {
   position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  height: 0;
+  display: block;
   overflow: hidden;
-  border-radius: 10px;
-  margin-bottom: 1rem;
+  background: #eee;
+  border: 1px solid #ddd8cf;
 }
 
-.video-wrapper iframe {
-  position: absolute;
+.video-thumb img {
+  display: block;
   width: 100%;
-  height: 100%;
-  border: 0;
-  top: 0;
-  left: 0;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
-.lecture-card h3 {
-  margin-top: 0.8rem;
-  margin-bottom: 0.6rem;
+.video-play {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: rgba(17, 24, 39, 0.88);
+  color: white;
+  padding: 5px 9px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
 
-.lecture-card p {
-  margin: 0.25rem 0;
+.video-info {
+  margin-top: 10px;
+}
+
+.video-info h4 {
+  margin: 0 0 7px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #1f2937;
+}
+
+.video-meta {
+  margin-top: 3px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
   </style>
 </head>
@@ -477,32 +493,40 @@ function renderVideos() {
       const speakerLabel = video.speakers.length === 1 ? "Speaker" : "Speakers";
 
       const hostLine = video.hosts.length > 0
-        ? `<p><strong>${video.hosts.length === 1 ? "Host" : "Hosts"}:</strong> ${video.hosts.join(", ")}</p>`
+        ? `<div class="video-meta"><strong>${video.hosts.length === 1 ? "Host" : "Hosts"}:</strong> ${video.hosts.join(", ")}</div>`
         : "";
 
       return `
-        <div class="lecture-card">
-          <div class="video-wrapper">
-            <iframe
-              src="https://www.youtube.com/embed/${video.youtubeId}"
-              title="${video.title}"
+        <article class="video-card">
+          <a
+            class="video-thumb"
+            href="https://www.youtube.com/watch?v=${video.youtubeId}"
+            target="_blank"
+            rel="noopener"
+            aria-label="Watch ${video.title} on YouTube"
+          >
+            <img
+              src="https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg"
+              alt="${video.title}"
               loading="lazy"
-              allowfullscreen>
-            </iframe>
-          </div>
+            />
+            <span class="video-play">Watch video</span>
+          </a>
 
-          <h3>${video.title}</h3>
-          <p><strong>${speakerLabel}:</strong> ${video.speakers.join(", ")}</p>
-          ${hostLine}
-          <p><strong>Channel:</strong> ${video.channel}</p>
-        </div>
+          <div class="video-info">
+            <h4>${video.title}</h4>
+            <div class="video-meta"><strong>${speakerLabel}:</strong> ${video.speakers.join(", ")}</div>
+            ${hostLine}
+            <div class="video-meta"><strong>Channel:</strong> ${video.channel}</div>
+          </div>
+        </article>
       `;
     }).join("");
 
     return `
       <div class="area-block">
         <h3>${type}s</h3>
-        <div class="lecture-grid">
+        <div class="video-grid">
           ${entries}
         </div>
       </div>
